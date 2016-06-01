@@ -37,7 +37,11 @@ class PhonemeTest(TestCase):
         vowel = specified.get_vowel()
         self.assertEqual(vowel, 'o')
 
+    def test_get_phonemes(self):
+        ''' retrieve the entire set '''
+        phonemes = specified.get_phonemes()
+        self.assertEqual(phonemes, (['p'], ['o']))
+
 
 if __name__ == '__main__':
     unittest.main()
-
