@@ -16,43 +16,15 @@ class Phoneme(object):
         # TODO: this is a bad approach
         data = {}
         if not consonants or not vowels:
-            data = json.dumps(open('%s/phonemes.json' % DATA).read())
-        self.consonants = consonants or data['vowels']
-        self.vowels = vowels or data['consonants']
-        self.consonant_clusters = consonant_clusters or ['str', 'cr', 'tr', 'pr', 'spr']
+            data = json.loads(open('%s/phonemes.json' % DATA).read())
+        self.consonants = consonants or data['consonants']
+        self.vowels = vowels or data['vowels']
+        self.consonant_clusters = consonant_clusters or data['consonant_clusters']
 
-        # TODO: store defaults like this somewhere else
         if vowels or consonants and not frequency:
             self.frequency = None
         else:
-            self.frequency = frequency or {
-                'a': 11.602,
-                'b': 4.702,
-                'c': 3.511,
-                'd': 2.670,
-                'e': 2.007,
-                'f': 3.779,
-                'g': 1.950,
-                'h': 7.232,
-                'i': 6.286,
-                'j': 0.597,
-                'k': 0.590,
-                'l': 2.705,
-                'm': 4.383,
-                'n': 2.365,
-                'o': 6.264,
-                'p': 2.545,
-                'q': 0.173,
-                'r': 1.653,
-                's': 7.755,
-                't': 16.671,
-                'u': 1.487,
-                'v': 0.649,
-                'w': 6.753,
-                'x': 0.017,
-                'y': 1.620,
-                'z': 0.034
-            }
+            self.frequency = frequency or data['frequencies']
 
             self.vowel_frequency = [v for (k, v) in self.frequency.items() if k in self.vowels]
             self.vowel_frequency = [float(i)/sum(self.vowel_frequency) \
