@@ -12,7 +12,7 @@ class Word(object):
     def get_word(self):
         ''' create a word '''
         # TODO: intelligently join morphemes
-        length = random.choice([1, 1, 1, 2, 2, 3])
+        length = random.choice([1, 1, 1, 2, 2])
         return ''.join([self.morphemes.get_morpheme() for _ in range(length)])
 
 if __name__ == '__main__':

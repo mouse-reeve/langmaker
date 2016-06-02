@@ -26,9 +26,9 @@ class Syllable(object):
             coda = 'C'
         else: # no coda
             coda = '\' \''
-
         # nucleus is always present
 
+        # based on the "typical model"
         grammar = '''
         S -> O V K
         O -> %s

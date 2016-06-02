@@ -1,6 +1,8 @@
 ''' Generate linguistically consistent phonemes '''
+import json
 import random
 from numpy.random import choice
+from langmaker import DATA
 
 # XXX: this class produces test data at this time
 class Phoneme(object):
@@ -12,10 +14,11 @@ class Phoneme(object):
         self.vowels = None
 
         # TODO: this is a bad approach
-        self.consonants = consonants or ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
-                                         'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w',
-                                         'x', 'z']
-        self.vowels = vowels or ['a', 'e', 'i', 'o', 'u', 'y']
+        data = {}
+        if not consonants or not vowels:
+            data = json.dumps(open('%s/phonemes.json' % DATA).read())
+        self.consonants = consonants or data['vowels']
+        self.vowels = vowels or data['consonants']
         self.consonant_clusters = consonant_clusters or ['str', 'cr', 'tr', 'pr', 'spr']
 
         # TODO: store defaults like this somewhere else
