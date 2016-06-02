@@ -21,10 +21,10 @@ class Phoneme(object):
         self.vowels = vowels or data['vowels']
         self.consonant_clusters = consonant_clusters or data['consonant_clusters']
 
-        if vowels or consonants and not frequency:
+        if not frequency:
             self.frequency = None
         else:
-            self.frequency = frequency or data['frequencies']
+            self.frequency = frequency
 
             self.vowel_frequency = [v for (k, v) in self.frequency.items() if k in self.vowels]
             self.vowel_frequency = [float(i)/sum(self.vowel_frequency) \
