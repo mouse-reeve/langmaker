@@ -29,29 +29,28 @@ class Syllable(object):
 
         # nucleus is always present
 
-        delimiter = '\' | \''
         grammar = '''
         S -> O V K
         O -> %s
         K -> %s
-        C -> \'%s\'
-        CC -> \'%s\'
-        V -> \'%s\'
-        ''' % (onset, coda,
-               delimiter.join(self.phonemes.consonants),
-               delimiter.join(self.phonemes.consonant_clusters),
-               delimiter.join(self.phonemes.vowels))
+        C -> \'c\'
+        CC -> \'cc\'
+        V -> \'v\'
+        ''' % (onset, coda)
         self.grammar = CFG.fromstring(grammar)
         self.syllables = self.generate_syllables()
 
     def generate_syllables(self):
         ''' every possible syllable for the given phonemes and grammar '''
         # spaces, which are only there for NLTK's sake, are removed
-        return [re.sub(' ', '', ''.join(s)) for s in generate(self.grammar, depth=4)]
+        return [re.sub(' ', '', '|'.join(s)) for s in generate(self.grammar, depth=4)]
 
     def get_syllable(self):
         ''' create a syllable '''
-        return random.choice(self.syllables)
+        structure = random.choice(self.syllables).split('|')
+        syllable = [self.phonemes.get_by_key(s) for s in structure]
+        return ''.join(syllable)
+
 
 if __name__ == '__main__':
     builder = Syllable()

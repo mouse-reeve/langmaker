@@ -1,13 +1,12 @@
 ''' test syllable generator '''
 import unittest
 from unittest import TestCase
+from unittest.mock import MagicMock
 
 from langmaker.syllable import Syllable, Phoneme
 
 phonemeMock = Phoneme
-phonemeMock.consonants = ['p']
-phonemeMock.consonant_clusters = ['pr']
-phonemeMock.vowels = ['o']
+phonemeMock.get_by_key = MagicMock(return_value='o')
 
 
 class SyllableTest(TestCase):
@@ -17,33 +16,27 @@ class SyllableTest(TestCase):
         ''' NLTK generated syllables '''
         instance = Syllable(phonemes=phonemeMock)
         syllables = instance.syllables
-        self.assertEqual(syllables, ['pop', 'po', 'prop', 'pro', 'op', 'o'])
+        self.assertEqual(syllables, ['c|v|c', 'c|v|', 'cc|v|c', 'cc|v|', '|v|c', '|v|'])
 
     def test_onset_states(self):
         ''' NLTK generated syllables with onset flag'''
         instance = Syllable(phonemes=phonemeMock, onset=True)
         syllables = instance.syllables
-        self.assertEqual(syllables, ['pop', 'po', 'prop', 'pro'])
+        self.assertEqual(syllables, ['c|v|c', 'c|v|', 'cc|v|c', 'cc|v|'])
 
         instance = Syllable(phonemes=phonemeMock, onset=False)
         syllables = instance.syllables
-        self.assertEqual(syllables, ['op', 'o'])
+        self.assertEqual(syllables, ['|v|c', '|v|'])
 
     def test_coda_states(self):
         ''' NLTK generated syllables with coda flag'''
         instance = Syllable(phonemes=phonemeMock, coda=True)
         syllables = instance.syllables
-        self.assertEqual(syllables, ['pop', 'prop', 'op'])
+        self.assertEqual(syllables, ['c|v|c', 'cc|v|c', '|v|c'])
 
         instance = Syllable(phonemes=phonemeMock, coda=False)
         syllables = instance.syllables
-        self.assertEqual(syllables, ['po', 'pro', 'o'])
-
-    def test_get_syllable(self):
-        ''' pick a syllablle '''
-        instance = Syllable(phonemes=phonemeMock)
-        syllable = instance.get_syllable()
-        self.assertTrue(syllable in ['pop', 'po', 'prop', 'pro', 'op', 'o'])
+        self.assertEqual(syllables, ['c|v|', 'cc|v|', '|v|'])
 
 
 if __name__ == '__main__':

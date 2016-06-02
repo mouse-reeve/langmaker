@@ -11,8 +11,9 @@ class Phoneme(object):
         self.vowels = None
 
         # TODO: this is a bad approach
-        self.consonants = consonants or ['b', 'c', 'ch', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q',
-                           'r', 's', 't', 'th', 'v', 'w', 'x', 'z']
+        self.consonants = consonants or ['b', 'c', 'ch', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+                                         'm', 'n', 'p', 'q', 'r', 's', 't', 'th', 'v', 'w',
+                                         'x', 'z']
         self.vowels = vowels or ['a', 'e', 'i', 'o', 'u', 'y']
         self.consonant_clusters = ['str', 'cr', 'tr', 'pr', 'spr']
 
@@ -24,9 +25,21 @@ class Phoneme(object):
         ''' retrieve a random consonant phoneme '''
         return random.choice(self.consonants)
 
-    def get_cluster(self):
+    def get_consonant_cluster(self):
         ''' retrieve a list of cluster-able consonants '''
         return random.choice(self.consonant_clusters)
+
+    def get_by_key(self, key):
+        ''' get a letter by type using cfg keys '''
+        keys = {
+            'c': self.get_consonant,
+            'cc': self.get_consonant_cluster,
+            'v': self.get_vowel
+        }
+        try:
+            return keys[key]()
+        except KeyError:
+            return ''
 
 
 if __name__ == '__main__':
