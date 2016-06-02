@@ -10,27 +10,11 @@ class Phoneme(object):
         self.consonants = None
         self.vowels = None
 
-        self.phoneme_set = {
-            'vowels': ['a', 'e', 'i', 'o', 'u', 'y'],
-            'consonants': ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r',
-                           's', 't', 'v', 'w', 'x', 'z']
-        }
-        self.consonants = consonants or self.generate_consonants()
-        self.vowels = vowels or self.generate_vowels()
-
-    def generate_consonants(self):
-        ''' generates a selection of consonant phonemes '''
-        # TODO: select a meaningful phoneme set
-        return self.consonants or self.phoneme_set['consonants']
-
-    def generate_vowels(self):
-        ''' generates a selection of vowel phonemes '''
-        # TODO: select a meaningful phoneme set
-        return self.vowels or self.phoneme_set['vowels']
-
-    def get_phonemes(self):
-        ''' return a complete list of phonemes '''
-        return (self.consonants, self.vowels)
+        # TODO: this is a bad approach
+        self.consonants = consonants or ['b', 'c', 'ch', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q',
+                           'r', 's', 't', 'th', 'v', 'w', 'x', 'z']
+        self.vowels = vowels or ['a', 'e', 'i', 'o', 'u', 'y']
+        self.consonant_clusters = ['str', 'cr', 'tr', 'pr', 'spr']
 
     def get_vowel(self):
         ''' retrieve a random vowel phoneme '''
@@ -39,6 +23,10 @@ class Phoneme(object):
     def get_consonant(self):
         ''' retrieve a random consonant phoneme '''
         return random.choice(self.consonants)
+
+    def get_cluster(self):
+        ''' retrieve a list of cluster-able consonants '''
+        return random.choice(self.consonant_clusters)
 
 
 if __name__ == '__main__':
