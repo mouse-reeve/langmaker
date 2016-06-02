@@ -1,29 +1,77 @@
 ''' Generate linguistically consistent phonemes '''
 import random
+from numpy.random import choice
 
 # XXX: this class produces test data at this time
 class Phoneme(object):
     ''' create phonemes '''
 
-    def __init__(self, consonants=None, consonant_clusters=None, vowels=None):
+    def __init__(self, consonants=None, consonant_clusters=None, vowels=None, frequency=None):
         # should be comprehensive, or pulled from a transcription class
         self.consonants = None
         self.vowels = None
 
         # TODO: this is a bad approach
-        self.consonants = consonants or ['b', 'c', 'ch', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
-                                         'm', 'n', 'p', 'q', 'r', 's', 't', 'th', 'v', 'w',
+        self.consonants = consonants or ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+                                         'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w',
                                          'x', 'z']
         self.vowels = vowels or ['a', 'e', 'i', 'o', 'u', 'y']
         self.consonant_clusters = consonant_clusters or ['str', 'cr', 'tr', 'pr', 'spr']
 
+        # TODO: store defaults like this somewhere else
+        if vowels or consonants and not frequency:
+            self.frequency = None
+        else:
+            self.frequency = frequency or {
+                'a': 11.602,
+                'b': 4.702,
+                'c': 3.511,
+                'd': 2.670,
+                'e': 2.007,
+                'f': 3.779,
+                'g': 1.950,
+                'h': 7.232,
+                'i': 6.286,
+                'j': 0.597,
+                'k': 0.590,
+                'l': 2.705,
+                'm': 4.383,
+                'n': 2.365,
+                'o': 6.264,
+                'p': 2.545,
+                'q': 0.173,
+                'r': 1.653,
+                's': 7.755,
+                't': 16.671,
+                'u': 1.487,
+                'v': 0.649,
+                'w': 6.753,
+                'x': 0.017,
+                'y': 1.620,
+                'z': 0.034
+            }
+
+            self.vowel_frequency = [v for (k, v) in self.frequency.items() if k in self.vowels]
+            self.vowel_frequency = [float(i)/sum(self.vowel_frequency) \
+                                    for i in self.vowel_frequency]
+            self.consonant_frequency = [v for (k, v) in self.frequency.items() \
+                                        if k in self.consonants]
+            self.consonant_frequency = [float(i)/sum(self.consonant_frequency) \
+                                        for i in self.consonant_frequency]
+
     def get_vowel(self):
         ''' retrieve a random vowel phoneme '''
-        return random.choice(self.vowels)
+        if self.frequency:
+            return choice(self.vowels, 1, p=self.vowel_frequency)[0]
+        else:
+            return random.choice(self.vowels)
 
     def get_consonant(self):
         ''' retrieve a random consonant phoneme '''
-        return random.choice(self.consonants)
+        if self.frequency:
+            return choice(self.consonants, 1, p=self.consonant_frequency)[0]
+        else:
+            return random.choice(self.consonants)
 
     def get_consonant_cluster(self):
         ''' retrieve a list of cluster-able consonants '''
@@ -44,5 +92,6 @@ class Phoneme(object):
 
 if __name__ == '__main__':
     builder = Phoneme()
-    print(builder.get_phonemes())
+    print(builder.get_vowel())
+    print(builder.get_consonant())
 
