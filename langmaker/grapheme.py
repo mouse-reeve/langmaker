@@ -3,25 +3,25 @@ import json
 import random
 from langmaker import DATA
 from langmaker.phoneme import Phoneme
-from langmaker.word import Word
+from langmaker.lemma import Lemma
 
 class Grapheme(object):
-    ''' produce graphemes for words '''
+    ''' produce graphemes for lemmas '''
 
-    def __init__(self, phonemes=None, conversions=None, words=None):
+    def __init__(self, phonemes=None, conversions=None, lemmas=None):
         if phonemes and not conversions:
             raise ValueError('Conversions must be provided with phonemes')
-        self.words = words or Word()
+        self.lemmas = lemmas or Lemma()
         self.phonemes = phonemes or Phoneme()
 
         data = json.loads(open('%s/graphemes.json' % DATA).read())
         self.conversions = conversions or data['conversions']
 
-    def write_word(self, word=None):
+    def write_lemma(self, lemma=None):
         ''' convert phonemes into graphemes '''
-        word = word or self.words.get_word()
+        lemma = lemma or self.lemmas.get_lemma()
         graphemes = []
-        for phoneme in word.split('/'):
+        for phoneme in lemma.split('/'):
             try:
                 options = self.conversions[phoneme]
                 graphemes.append(random.choice(options))
@@ -32,4 +32,4 @@ class Grapheme(object):
 if __name__ == '__main__':
     builder = Grapheme()
     for _ in range(10):
-        print(builder.write_word())
+        print(builder.write_lemma())
