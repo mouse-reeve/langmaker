@@ -1,18 +1,15 @@
 ''' System for generating lemmas, buildin on existing linguistic data '''
-from numpy.random import choice
-from langmaker.morpheme import Morpheme
+from langmaker.morphology import Morphology
 
 class Lemma(object):
-    ''' the dumbest to generate a lemma - just random letters '''
+    ''' works with words - produces dictionaries, maybe '''
 
-    def __init__(self, morphemes=None):
-        self.morphemes = morphemes or Morpheme()
+    def __init__(self, morphology=None):
+        self.morphology = morphology or Morphology()
 
     def get_lemma(self):
         ''' create a lemma '''
-        # TODO: intelligently join morphemes
-        length = choice([1, 2], 1, p=[0.9, 0.1])[0]
-        return '/'.join([self.morphemes.get_morpheme() for _ in range(length)])
+        return self.morphology.generate_word()
 
 if __name__ == '__main__':
     builder = Lemma()
