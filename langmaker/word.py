@@ -1,6 +1,5 @@
 ''' System for generating words, buildin on existing linguistic data '''
-import random
-
+from numpy.random import choice
 from langmaker.morpheme import Morpheme
 
 class Word(object):
@@ -12,7 +11,7 @@ class Word(object):
     def get_word(self):
         ''' create a word '''
         # TODO: intelligently join morphemes
-        length = random.choice([1, 1, 1, 2, 2])
+        length = choice([1, 2], 1, p=[0.9, 0.1])[0]
         return '/'.join([self.morphemes.get_morpheme() for _ in range(length)])
 
 if __name__ == '__main__':
