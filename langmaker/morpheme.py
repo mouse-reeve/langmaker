@@ -14,7 +14,7 @@ class Morpheme(object):
         # TODO: intelligently join syllables
         # TODO: consider free vs bound morphemes
         length = length or random.choice([1, 2, 2, 2, 3])
-        return ''.join([self.syllables.get_syllable() for _ in range(length)])
+        return '/'.join([self.syllables.get_syllable() for _ in range(length)])
 
 if __name__ == '__main__':
     builder = Morpheme()

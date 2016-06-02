@@ -43,8 +43,8 @@
         "ZH"
     ],
     "consonant_clusters": [
-        "B|R",
-        "G|R",
-        "S|T|R"
+        "B/R",
+        "G/R",
+        "S/T/R"
     ]
 }

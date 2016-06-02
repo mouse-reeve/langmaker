@@ -43,15 +43,16 @@ class Syllable(object):
     def generate_syllables(self):
         ''' every possible syllable for the given phonemes and grammar '''
         # spaces, which are only there for NLTK's sake, are removed
-        return [re.sub(' ', '', '|'.join(s)) for s in generate(self.grammar, depth=4)]
+        return [re.sub(' ', '', '/'.join(s)) for s in generate(self.grammar, depth=4)]
 
     def get_syllable(self):
         ''' create a syllable '''
-        structure = random.choice(self.syllables).split('|')
-        syllable = [self.phonemes.get_by_key(s) for s in structure]
-        return ''.join(syllable)
+        structure = random.choice(self.syllables).split('/')
+        syllable = [self.phonemes.get_by_key(s) for s in structure if s]
+        return '/'.join(syllable)
 
 
 if __name__ == '__main__':
     builder = Syllable()
-    print(builder.get_syllable())
+    for _ in range(10):
+        print(builder.get_syllable())

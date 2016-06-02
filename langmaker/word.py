@@ -13,7 +13,7 @@ class Word(object):
         ''' create a word '''
         # TODO: intelligently join morphemes
         length = random.choice([1, 1, 1, 2, 2])
-        return ''.join([self.morphemes.get_morpheme() for _ in range(length)])
+        return '/'.join([self.morphemes.get_morpheme() for _ in range(length)])
 
 if __name__ == '__main__':
     wordbuilder = Word()
