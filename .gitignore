@@ -7,4 +7,6 @@ pip-selfcheck.json
 # virtualenv
 venv/
 
-export.*
+build/
+dist/
+*.egg-info/
