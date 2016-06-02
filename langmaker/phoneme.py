@@ -5,7 +5,7 @@ import random
 class Phoneme(object):
     ''' create phonemes '''
 
-    def __init__(self, consonants=None, vowels=None):
+    def __init__(self, consonants=None, consonant_clusters=None, vowels=None):
         # should be comprehensive, or pulled from a transcription class
         self.consonants = None
         self.vowels = None
@@ -15,7 +15,7 @@ class Phoneme(object):
                                          'm', 'n', 'p', 'q', 'r', 's', 't', 'th', 'v', 'w',
                                          'x', 'z']
         self.vowels = vowels or ['a', 'e', 'i', 'o', 'u', 'y']
-        self.consonant_clusters = ['str', 'cr', 'tr', 'pr', 'spr']
+        self.consonant_clusters = consonant_clusters or ['str', 'cr', 'tr', 'pr', 'spr']
 
     def get_vowel(self):
         ''' retrieve a random vowel phoneme '''

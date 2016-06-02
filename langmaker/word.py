@@ -17,4 +17,5 @@ class Word(object):
 
 if __name__ == '__main__':
     wordbuilder = Word()
-    print(wordbuilder.get_word())
+    for _ in range(10):
+        print(wordbuilder.get_word())
