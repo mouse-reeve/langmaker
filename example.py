@@ -3,7 +3,7 @@ from langmaker.phoneme import Phoneme
 from langmaker.syllable import Syllable
 from langmaker.morpheme import Morpheme
 from langmaker.morphology import Morphology
-from langmaker.lemma import Lemma
+from langmaker.lexeme import Lexeme
 from langmaker.grapheme import Grapheme
 
 consonants = ['b', 'p', 'l']
@@ -13,9 +13,9 @@ phoneme = Phoneme(consonants=consonants, vowels=vowels, consonant_clusters=['b/l
 syllable = Syllable(phonemes=phoneme, coda=True)
 morpheme = Morpheme(syllables=syllable)
 morphology = Morphology(morphemes=morpheme)
-lemma = Lemma(morphology=morphology)
+lexeme = Lexeme(morphology=morphology)
 conversions = {p: p for p in consonants + vowels}
-grapheme = Grapheme(phonemes=phoneme, lemmas=lemma, conversions=conversions)
+grapheme = Grapheme(phonemes=phoneme, lexemes=lexeme, conversions=conversions)
 
 for _ in range(10):
-    print(grapheme.write_lemma())
+    print(grapheme.write_word())

@@ -1,17 +1,17 @@
-''' System for generating lemmas, buildin on existing linguistic data '''
+''' System for generating lexemes, lemmas, and words, buildin on existing linguistic data '''
 from langmaker.morphology import Morphology
 
-class Lemma(object):
+class Lexeme(object):
     ''' works with words - produces dictionaries, maybe '''
 
     def __init__(self, morphology=None):
         self.morphology = morphology or Morphology()
 
-    def get_lemma(self):
-        ''' create a lemma '''
+    def get_word(self):
+        ''' create a word (lemma or lexeme) '''
         return self.morphology.generate_word()
 
 if __name__ == '__main__':
-    builder = Lemma()
+    builder = Lexeme()
     for _ in range(10):
-        print(builder.get_lemma())
+        print(builder.get_lexeme())
