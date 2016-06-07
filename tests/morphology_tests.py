@@ -12,9 +12,9 @@ instance = Morphology(morphemes=morphemeMock)
 class MorphologyTest(TestCase):
     ''' morphology tests '''
 
-    def test_generate_word(self):
+    def test_generate_lemma(self):
         ''' tests that a word in build from morphemes '''
-        word = instance.generate_word()
+        word = instance.generate_lemma()
         self.assertTrue(len(word) > 0 and 'mor' in word)
 
 
