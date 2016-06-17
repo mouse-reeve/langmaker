@@ -9,25 +9,28 @@ class Morphology(object):
     def __init__(self, morphemes=None):
         self.morphemes = morphemes or Morpheme()
 
-    def plural(self, word, number):
-        ''' plural inflection '''
-        # TODO: this is terrible
-        affix = ''
-        # TODO: conspider multiple plurals
-        if number != 1:
-            affix = self.morphemes.get_affix('pl')
-        # TODO: consider nonterminal plural affixes
-        return word + affix
+    def decline(self, word, word_pos, tags):
+        ''' declension for inflected nouns, pronounces, adjectives, and determiners '''
+        # TODO: define tags
+        # TODO: consider interaction between morphological tags
+        if 'pl' in tags and word_pos in ['NN', 'NNP']:
+            word += self.morphemes.get_affix('pl')
 
-    def inflect(self, lemma, word_pos, number=None):
+        if 'f' in tags and word_pos in ['JJ']:
+            word += self.morphemes.get_affix('f')
+
+        return word
+
+    def inflect(self, lemma, word_pos, tags):
         ''' inflect a word based on grammatical variables '''
         # yeah, build n inflection engine, no problem
         # TODO: account for all kinds of inflection
         if not word_pos in pos:
             raise KeyError('invalid part of speech')
         # TODO: which type of inflection applies to which pos
-        if number: # TODO: and this pos pluralizes
-            return self.plural(lemma, number)
+        # noun, pronoun, adjective, determiner
+        if word_pos in ['NN', 'NNP', 'JJ', 'PDT']:
+            return self.decline(lemma, word_pos, tags)
         return lemma
 
     def generate_lemma(self):
@@ -41,6 +44,8 @@ if __name__ == '__main__':
     builder = Morphology()
     for _ in range(10):
         sample_lemma = builder.generate_lemma()
-        lemma_infl = builder.inflect(sample_lemma, 'NN', number=2)
+        lemma_pl = builder.inflect(sample_lemma, 'NN', ['pl'])
+        lemma_infl = builder.inflect(sample_lemma, 'JJ', ['f'])
         print(sample_lemma)
+        print(lemma_pl)
         print(lemma_infl)
