@@ -33,8 +33,10 @@ class Morphology(object):
             return self.decline(lemma, word_pos, tags)
         return lemma
 
-    def generate_lemma(self):
+    def generate_lemma(self, word_pos):
         ''' combine morphemes into lemmas '''
+        if not word_pos in pos:
+            raise KeyError('invalid part of speech')
         # TODO: intelligently join morphemes
         # TODO: meaningful morpheme count
         length = choice([1, 2], 1, p=[0.9, 0.1])[0]
@@ -43,7 +45,7 @@ class Morphology(object):
 if __name__ == '__main__':
     builder = Morphology()
     for _ in range(10):
-        sample_lemma = builder.generate_lemma()
+        sample_lemma = builder.generate_lemma('NN')
         lemma_pl = builder.inflect(sample_lemma, 'NN', ['pl'])
         lemma_infl = builder.inflect(sample_lemma, 'JJ', ['f'])
         print(sample_lemma)
