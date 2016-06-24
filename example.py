@@ -7,7 +7,7 @@ from langmaker.lexeme import Lexeme
 from langmaker.grapheme import Grapheme
 
 consonants = ['b', 'p', 'l', 'f']
-vowels = ['o', 'oo', 'ou', 'eie']
+vowels = ['o', 'oo', 'ou', 'oio']
 
 phoneme = Phoneme(consonants=consonants, vowels=vowels,
                   consonant_clusters=['b/l', 'p/l', 'f/l'])
@@ -29,4 +29,4 @@ translate = [
 ]
 for word in translate:
     translated = lexeme.translate(word[0], word[1])
-    print(grapheme.write_word(translated))
+    print('%s: %s' % (word[0], grapheme.write_word(translated)))
