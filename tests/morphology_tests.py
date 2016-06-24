@@ -14,7 +14,7 @@ class MorphologyTest(TestCase):
 
     def test_generate_lemma(self):
         ''' tests that a word in build from morphemes '''
-        word = instance.generate_lemma()
+        word = instance.generate_lemma('NN')
         self.assertTrue(len(word) > 0 and 'mor' in word)
 
 
