@@ -15,7 +15,7 @@ class Morpheme(object):
         # TODO: intelligently join syllables
         # TODO: consider free vs bound morphemes
         length = length or choice([1, 2, 3], 1, p=[0.5, 0.49, 0.01])[0]
-        return '/'.join([self.syllables.get_syllable() for _ in range(length)])
+        return ''.join([self.syllables.get_syllable() for _ in range(length)])
 
     def get_affix(self, tag):
         if not tag in self.affixes:

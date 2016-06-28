@@ -1,5 +1,4 @@
 ''' Translate phonemes into graphemes '''
-from langmaker import cmu_graphemes
 from langmaker.phoneme import Phoneme
 from langmaker.transcriptionrule import TranscriptionRules
 
@@ -7,22 +6,17 @@ class Grapheme(object):
     ''' produce graphemes for words '''
     rules = TranscriptionRules()
 
-    def __init__(self, phonemes=None, conversions=None, rules=None):
-        if phonemes and not conversions:
-            raise ValueError('Conversions must be provided with phonemes')
-
+    def __init__(self, phonemes=None, rules=None):
         self.phonemes = phonemes or Phoneme()
-        if not conversions:
-            conversions = self.pick_conversions()
 
         # patterns in phoneme -> grapheme conversion
-        if rules:
-            for rule in rules:
-                self.rules.add_rule(rule[0], rule[1])
+        if not rules:
+            rules = self.generate_rules()
+        for rule in rules:
+            self.rules.add_rule(rule[0], rule[1])
 
-        # conversions are one-to-one phoneme to grapheme conversions
-        # they're less "correct" but necessary to avoid untranscribed edge cases
-        for conversion in conversions:
+        # one-to-one phoneme->grapheme, to avoid missing phonemes
+        for conversion in self.phonemes.get_phonemes():
             self.rules.add_rule(conversion[0], conversion[1])
 
 
@@ -32,14 +26,12 @@ class Grapheme(object):
         return ''.join(written.split('/'))
 
 
-    def pick_conversions(self):
-        ''' if nothing is given, make up some plausible graphemes '''
-        # TODO: better defaults
-        conversions = []
-        graphemeset = {i[0]: i for i in cmu_graphemes['conversions']}
-        for phoneme in self.phonemes.get_phonemes():
-            conversions.append(graphemeset[phoneme])
-        return conversions
+    def generate_rules(self):
+        ''' generate some transcriptions rules '''
+        # TODO
+        return [
+            (r'/L/IY/$', '/ly/')
+        ]
 
 if __name__ == '__main__':
     builder = Grapheme()

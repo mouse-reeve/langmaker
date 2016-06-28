@@ -1,5 +1,5 @@
 ''' a sample file of a fully customized language generation process '''
-from langmaker import cmu_phonemes, cmu_graphemes
+from langmaker import cmu_phonemes
 
 from langmaker.phoneme import Phoneme
 from langmaker.syllable import Syllable
@@ -8,34 +8,29 @@ from langmaker.morphology import Morphology
 from langmaker.lexeme import Lexeme
 from langmaker.grapheme import Grapheme
 
-consonants = cmu_phonemes['consonants']
-clusters = cmu_phonemes['consonant_clusters']
-vowels = cmu_phonemes['vowels']
-
 inflection_rules = [
     # PoS default endings
-    (['RB'], r'$', 'L/IY/'),
+    (['RB'], r'$', '/L//IY/'),
 
     # Pluralization rules
-    (['NN', 'Pl'], r'$', 'S/'),
+    (['NN', 'Pl'], r'$', '/S/'),
 
     # Declension
-    (['PRP', 'Sg', 'Masc', 'Acc'], r'^(.*)\/[A-Z]*/', r'\1/IH/M/'),
+    (['PRP', 'Sg', 'Masc', 'Acc'], r'^(.*)\/[A-Z]*\/$', r'\1/IH//M/'),
     (['PRP', 'Sg', 'Fem', 'Acc'], r'^.*\/(.*)', r'\1/R/'),
 
     # Conjugation
     # -- 3rd person signular present tense
-    (['VB', 'Sg3', 'Prs'], r'$', 'S/'),
+    (['VB', 'Sg3', 'Prs'], r'$', '/S/'),
     # - past tense
-    (['VB', 'Pst'], r'$', 'EH/D/')
+    (['VB', 'Pst'], r'$', '/EH//D/')
 ]
 
 transcription_rules = [
     (r'/L/IY/$', '/ly/')
 ]
 
-phoneme = Phoneme(consonants=consonants, vowels=vowels,
-                  consonant_clusters=clusters)
+phoneme = Phoneme(phonemes=cmu_phonemes)
 
 # english has highly flexible phonemes - coda and onset are both optional
 syllable = Syllable(phonemes=phoneme)
@@ -43,8 +38,7 @@ morpheme = Morpheme(syllables=syllable)
 morphology = Morphology(morphemes=morpheme, rules=inflection_rules)
 lexeme = Lexeme(morphology=morphology)
 
-grapheme = Grapheme(phonemes=phoneme, rules=transcription_rules,
-                    conversions=cmu_graphemes['conversions'])
+grapheme = Grapheme(phonemes=phoneme, rules=transcription_rules)
 
 translate = [
     ('noun', 'NN'),

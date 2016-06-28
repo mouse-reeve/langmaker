@@ -10,7 +10,7 @@ class Morphology(object):
     def __init__(self, morphemes=None, rules=None):
         self.morphemes = morphemes or Morpheme()
         rules = rules if rules else [
-            (['NN', 'Pl', 'Nom'], '$', '/S')
+            (['NN', 'Pl', 'Nom'], '$', '/S/')
         ]
 
         self.rules = InflectionRules(signatures=rules)
@@ -29,8 +29,8 @@ class Morphology(object):
         # TODO: intelligently join morphemes
         # TODO: meaningful morpheme count
         length = choice([1, 2], 1, p=[0.9, 0.1])[0]
-        lemma = '/'.join([self.morphemes.get_morpheme() for _ in range(length)])
-        return '/%s/' % lemma
+        lemma = ''.join([self.morphemes.get_morpheme() for _ in range(length)])
+        return '%s' % lemma
 
 if __name__ == '__main__':
     builder = Morphology()
