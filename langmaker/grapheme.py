@@ -10,9 +10,10 @@ class Grapheme(object):
     def __init__(self, phonemes=None, conversions=None, rules=None):
         if phonemes and not conversions:
             raise ValueError('Conversions must be provided with phonemes')
-        conversions = conversions or cmu_graphemes['conversions']
 
         self.phonemes = phonemes or Phoneme()
+        if not conversions:
+            conversions = self.pick_conversions()
 
         # patterns in phoneme -> grapheme conversion
         if rules:
@@ -29,6 +30,15 @@ class Grapheme(object):
         ''' convert phonemes into graphemes '''
         written = self.rules.apply_rules(word)
         return ''.join(written.split('/'))
+
+    def pick_conversions(self):
+        ''' if nothing is given, make up some plausible graphemes '''
+        # TODO: better defaults
+        conversions = []
+        graphemeset = {i[0]: i for i in cmu_graphemes['conversions']}
+        for phoneme in self.phonemes.get_phonemes():
+            conversions.append(graphemeset[phoneme])
+        return conversions
 
 if __name__ == '__main__':
     builder = Grapheme()

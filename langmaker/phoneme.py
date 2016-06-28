@@ -33,6 +33,10 @@ class Phoneme(object):
             self.consonant_frequency = [float(i)/sum(self.consonant_frequency) \
                                         for i in self.consonant_frequency]
 
+    def get_phonemes(self):
+        ''' a simple list of all phonemes '''
+        return self.vowels + self.consonants
+
     def get_vowel(self):
         ''' retrieve a random vowel phoneme '''
         if self.frequency:
