@@ -14,18 +14,24 @@ vowels = cmu_phonemes['vowels']
 
 inflection_rules = [
     # PoS default endings
-    (['RB'], r'$', '/L/IY'),
+    (['RB'], r'$', 'L/IY/'),
 
     # Pluralization rules
-    (['NN', 'Pl'], r'$', '/S'),
+    (['NN', 'Pl'], r'$', 'S/'),
 
     # Declension
-    (['PRP', 'Sg', 'Masc', 'Acc'], r'^(.*)\/.*', r'/\1/IH/M'),
-    (['PRP', 'Sg', 'Fem', 'Acc'], r'^.*\/(.*)', r'\1/R')
+    (['PRP', 'Sg', 'Masc', 'Acc'], r'^(.*)\/[A-Z]*/', r'\1/IH/M/'),
+    (['PRP', 'Sg', 'Fem', 'Acc'], r'^.*\/(.*)', r'\1/R/'),
+
+    # Conjugation
+    # -- 3rd person signular present tense
+    (['VB', 'Sg3', 'Prs'], r'$', 'S/'),
+    # - past tense
+    (['VB', 'Pst'], r'$', 'EH/D/')
 ]
 
 transcription_rules = [
-    (r'L/IY$', 'ly')
+    (r'/L/IY/$', '/ly/')
 ]
 
 phoneme = Phoneme(consonants=consonants, vowels=vowels,
@@ -65,10 +71,30 @@ for word in translate:
     if word[0] == 'm. pron':
         inflected = morphology.inflect(translated, word[1],
                                        ['PRP', 'Sg', 'Masc', 'Acc'])
-        print('      akk: %s' % grapheme.write_word(inflected))
+        print('      acc: %s' % grapheme.write_word(inflected))
 
     if word[0] == 'f. pron':
         inflected = morphology.inflect(translated,
                                        word[1], ['PRP', 'Sg', 'Fem', 'Acc'])
-        print('      akk: %s' % grapheme.write_word(inflected))
+        print('      acc: %s' % grapheme.write_word(inflected))
 
+print('she promptly killed him')
+sentence = [
+    ['he', 'PRP', []],
+    ['prompt', 'RB', []],
+    ['kill', 'VB', ['Pst']],
+    ['he', 'PRP', ['Sg', 'Masc', 'Acc']]
+]
+after = []
+for word in sentence:
+    print('-----')
+    print(word)
+    translated = lexeme.translate(word[0], word[1])
+    print(translated)
+    translated = morphology.inflect(translated, word[1], [word[1]] + word[2])
+    print(translated)
+    translated = grapheme.write_word(translated)
+    print(translated)
+    after.append(translated)
+
+print(' '.join(after))

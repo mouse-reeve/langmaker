@@ -31,6 +31,7 @@ class Grapheme(object):
         written = self.rules.apply_rules(word)
         return ''.join(written.split('/'))
 
+
     def pick_conversions(self):
         ''' if nothing is given, make up some plausible graphemes '''
         # TODO: better defaults

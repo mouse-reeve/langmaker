@@ -17,7 +17,7 @@ class InflectionRules(object):
         try:
             rule = self.rules[tags]
         except KeyError:
-            logging.error('No rule found for tags %s', tags)
+            logging.info('No rule found for tags %s', tags)
             return lemma
 
         return rule.inflect(lemma)

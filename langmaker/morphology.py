@@ -29,7 +29,8 @@ class Morphology(object):
         # TODO: intelligently join morphemes
         # TODO: meaningful morpheme count
         length = choice([1, 2], 1, p=[0.9, 0.1])[0]
-        return '/'.join([self.morphemes.get_morpheme() for _ in range(length)])
+        lemma = '/'.join([self.morphemes.get_morpheme() for _ in range(length)])
+        return '/%s/' % lemma
 
 if __name__ == '__main__':
     builder = Morphology()
