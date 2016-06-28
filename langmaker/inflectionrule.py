@@ -12,6 +12,7 @@ class InflectionRules(object):
 
     def apply_rule(self, lemma, tags):
         ''' run the appropriate rule on a lemma for given tags '''
+        # TODO: handle overloading rule tags
         tags = ','.join(tags)
         try:
             rule = self.rules[tags]

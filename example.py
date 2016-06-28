@@ -19,8 +19,8 @@ morpheme = Morpheme(syllables=syllable)
 morphology = Morphology(morphemes=morpheme, rules=inflection_rules)
 lexeme = Lexeme(morphology=morphology)
 
-conversions = {p: [p] for p in consonants + vowels}
-grapheme = Grapheme(phonemes=phoneme, lexemes=lexeme, conversions=conversions)
+conversions = [[p, p] for p in consonants + vowels]
+grapheme = Grapheme(phonemes=phoneme, conversions=conversions)
 
 translate = [
     ('cat', 'NN'),

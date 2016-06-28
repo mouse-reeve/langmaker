@@ -1,32 +1,31 @@
 ''' Generate linguistically consistent phonemes '''
-import json
 import random
 from numpy.random import choice
-from langmaker import DATA
 
-# XXX: this class produces test data at this time
+from langmaker import cmu_phonemes
+
 class Phoneme(object):
     ''' create phonemes '''
 
-    def __init__(self, consonants=None, consonant_clusters=None, vowels=None, frequency=None):
-        # should be comprehensive, or pulled from a transcription class
-        self.consonants = None
-        self.vowels = None
+    def __init__(self, consonants=None, consonant_clusters=None,
+                 vowels=None, frequency=None):
 
         # TODO: this is a bad approach
         data = {}
         if not consonants or not vowels:
-            data = json.loads(open('%s/phonemes.json' % DATA).read())
+            data = cmu_phonemes
         self.consonants = consonants or data['consonants']
         self.vowels = vowels or data['vowels']
-        self.consonant_clusters = consonant_clusters or data['consonant_clusters']
+        self.consonant_clusters = consonant_clusters or \
+                                  data['consonant_clusters']
 
         if not frequency:
             self.frequency = None
         else:
             self.frequency = frequency
 
-            self.vowel_frequency = [v for (k, v) in self.frequency.items() if k in self.vowels]
+            self.vowel_frequency = [v for (k, v) in self.frequency.items()
+                                    if k in self.vowels]
             self.vowel_frequency = [float(i)/sum(self.vowel_frequency) \
                                     for i in self.vowel_frequency]
             self.consonant_frequency = [v for (k, v) in self.frequency.items() \

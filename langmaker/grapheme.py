@@ -1,35 +1,35 @@
 ''' Translate phonemes into graphemes '''
-import json
-import random
-from langmaker import DATA
+from langmaker import cmu_graphemes
 from langmaker.phoneme import Phoneme
-from langmaker.lexeme import Lexeme
+from langmaker.transcriptionrule import TranscriptionRules
 
 class Grapheme(object):
     ''' produce graphemes for words '''
+    rules = TranscriptionRules()
 
-    def __init__(self, phonemes=None, conversions=None, lexemes=None):
+    def __init__(self, phonemes=None, conversions=None, rules=None):
         if phonemes and not conversions:
             raise ValueError('Conversions must be provided with phonemes')
-        self.lexemes = lexemes or Lexeme()
+        conversions = conversions or cmu_graphemes['conversions']
+
         self.phonemes = phonemes or Phoneme()
 
-        data = json.loads(open('%s/graphemes.json' % DATA).read())
-        self.conversions = conversions or data['conversions']
+        # patterns in phoneme -> grapheme conversion
+        if rules:
+            for rule in rules:
+                self.rules.add_rule(rule[0], rule[1])
 
-    def write_word(self, word=None):
+        # conversions are one-to-one phoneme to grapheme conversions
+        # they're less "correct" but necessary to avoid untranscribed edge cases
+        for conversion in conversions:
+            self.rules.add_rule(conversion[0], conversion[1])
+
+
+    def write_word(self, word):
         ''' convert phonemes into graphemes '''
-        word = word or self.lexemes.get_word()
-        graphemes = []
-        for phoneme in word.split('/'):
-            try:
-                options = self.conversions[phoneme]
-                graphemes.append(random.choice(options))
-            except KeyError:
-                graphemes.append(phoneme)
-        return ''.join(graphemes)
+        written = self.rules.apply_rules(word)
+        return ''.join(written.split('/'))
 
 if __name__ == '__main__':
     builder = Grapheme()
-    for _ in range(10):
-        print(builder.write_word())
+    print(builder.write_word('T/AH/M/EY/T/OW'))
